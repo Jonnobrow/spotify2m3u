@@ -1,0 +1,10 @@
+---
+log_level: INFO
+auto_mode: False
+paths:
+  music_dir: /media/music/
+  beets_db: /media/music/beets.db
+  playlist_dir: /media/music/playlists/
+credentials:
+  CLIENT_ID: 
+  CLIENT_SECRET:
