@@ -33,7 +33,7 @@ def _safe_unpack_response(response, key):
             logger.error("Response body did not contain JSON")
     else:
         logger.error(f"Response status code was {response.status_code}")
-        logger.info("Check credentials")
+        logger.info("Check credentials or playlist ID")
     return value
 
 
@@ -87,8 +87,6 @@ def _get_playlist_tracks(headers, playlist_id):
         tracks = _safe_unpack_response(response, "items")
         if tracks is not None:
             logger.debug(f"Got {len(tracks)} tracks")
-        else:
-            logger.warning("Got no tracks for playlist")
     except ConnectionError:
         logger.exception("Failed to connect to spotify API")
         logger.info("Check your credentials and network connection")

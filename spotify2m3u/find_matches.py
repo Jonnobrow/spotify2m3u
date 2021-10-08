@@ -22,11 +22,19 @@ def find_match(title: str, album: str, artists: str):
     if len(results) == 0:
         logger.info("No results found for %s - %s - %s",
                     artists, album, title)
-        logger.warning("Searching by title only"
-                       "- may lead to a large number of results")
+        logger.warning("Searching by track title only"
+                       " - may lead to a large number of results")
         results.extend(_find_matches_by_title_only(title))
-        if len(results) == 0:
-            logger.info("No additional results found, track skipped")
+    if len(results) == 0:
+        logger.info("No additional results found")
+        logger.warning("Searching by album title only"
+                       " - may lead to a large number of results")
+        results.extend(_find_matches_by_album_only(album))
+    if len(results) == 0:
+        logger.info("No additional results found")
+        logger.warning("Searching by primary artist only"
+                       " - may lead to a large number of results")
+        results.extend(_find_matches_by_primary_artist_only(artists))
     for result in results:
         logger.debug("Found Result: %s at %s",
                      result, result.get("path"))
@@ -53,6 +61,21 @@ def _find_matches_by_artist_and_title(title: str, artists: str):
 def _find_matches_by_title_only(title: str):
     logger.debug("Finding results by track title only")
     results = lib.items(f"title:'{title}'")
+    logger.debug("Found %d results" % len(results))
+    return list(results)
+
+
+def _find_matches_by_album_only(album: str):
+    logger.debug("Finding tracks by album title only")
+    results = lib.items(f"album:'{album}'")
+    logger.debug("Found %d results" % len(results))
+    return list(results)
+
+
+def _find_matches_by_primary_artist_only(artists: str):
+    primary_artist = artists.split(";")[0]
+    logger.debug("Finding tracks by artist only")
+    results = lib.items(f"artist:'{primary_artist}'")
     logger.debug("Found %d results" % len(results))
     return list(results)
 
