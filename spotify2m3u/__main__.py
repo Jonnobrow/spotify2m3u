@@ -40,9 +40,9 @@ if __name__ == "__main__":
         album_artists = ";".join(artist["name"] for artist in album["artists"])
         match = find_matches.find_match(track_name, album_name, track_artists+";"+album_artists)
         if match is not None:
-            matches.append(match)
+            matches.append(match.get('path'))
 
     playlist_file_path = os.path.join(spotify2m3u.config["paths"]["playlist_dir"].get(str), f"{playlist_name}.m3u")
     logger.info("Writing playlist to: %s", playlist_file_path)
     with open(playlist_file_path, 'w') as playlist_file:
-        playlist_file.writelines(match.destination().decode("UTF-8") + "\n" for match in matches)
+        playlist_file.writelines(match.decode("UTF-8") + "\n" for match in matches)

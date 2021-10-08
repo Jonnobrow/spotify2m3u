@@ -1,22 +1,18 @@
 import beets.library
+import beets
 import spotify2m3u
 from spotify2m3u import get_logger
 import sys
+from beets.ui import get_path_formats, get_replacements
 
 logger = get_logger(__name__)
 beets_db_path = spotify2m3u.config["paths"]["beets_db"].get()
 music_dir_path = spotify2m3u.config["paths"]["music_dir"].get()
 auto_mode = spotify2m3u.config["auto_mode"].get(False)
-try:
-    logger.info("Instatiating beets library") 
-    lib = beets.library.Library(beets_db_path, music_dir_path)
-    logger.debug("Successfully instantiated beet library") 
-except:
-    logger.critical("Failed to instantiate beets library")
-    logger.info("Check paths:beets_db and paths:music_dir are valid")
-    logger.debug(f"spotify2m3u:paths:beets_db => {beets_db_path}")
-    logger.debug(f"spotify2m3u:paths:music_dir => {music_dir_path}")
-    sys.exit(1)
+logger.info("Instatiating beets library")
+lib = beets.library.Library(beets_db_path, music_dir_path,
+                            get_path_formats(), get_replacements())
+logger.info("Successfully instantiated beet library")
 
 
 def find_match(title: str, album: str, artists: str):
@@ -33,7 +29,7 @@ def find_match(title: str, album: str, artists: str):
             logger.info("No additional results found, track skipped")
     for result in results:
         logger.debug("Found Result: %s at %s",
-                     result, result.destination())
+                     result, result.get("path"))
     return _choose_best_match(results, title, album, artists)
 
 
@@ -77,7 +73,7 @@ def _choose_best_match(results: list, title: str,
     print("Enter the number of the best match, or 0 to skip")
     for i in range(len(results)):
         result = results[i]
-        print(f"{i+1}) - {result} at {result.destination()}")
+        print(f"{i+1}) - {result} at {result.get('path')}")
 
     choice = -1
     while choice < 0:

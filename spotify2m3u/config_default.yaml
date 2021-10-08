@@ -1,5 +1,4 @@
 ---
-log_level: INFO
 auto_mode: False
 paths:
   music_dir: /media/music/
