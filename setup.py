@@ -9,7 +9,7 @@ def _read(fn):
 
 setup(
     name='spotify2m3u',
-    version='0.0.1',
+    version='0.0.2',
     description='spotify playlist recreation using local library',
     author='Jonathan Bartlett',
     author_email='jonathan@jonnobrow.co.uk',

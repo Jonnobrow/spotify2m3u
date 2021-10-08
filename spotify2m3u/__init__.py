@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __author__ = "Jonathan Bartlett <jonathan@jonnobrow.co.uk>"
 
 config = confuse.LazyConfig('spotify2m3u', __name__)
