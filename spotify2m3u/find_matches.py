@@ -81,6 +81,17 @@ def _find_matches_by_primary_artist_only(artists: str):
     return list(results)
 
 
+def _set_matches(results: list):
+    logger.debug(type(results[0]))
+    seen_paths = set()
+    results_set = []
+    for result in results:
+        if result.get("path") not in seen_paths:
+            results_set.append(result)
+            seen_paths.add(result.get("path"))
+    return results_set
+
+
 def _choose_best_match(results: list, title: str,
                        album: str, artists: str):
 
