@@ -1,0 +1,4 @@
+
+global-exclude .DS_Store
+
+include spotify2m3u/config_default.yaml

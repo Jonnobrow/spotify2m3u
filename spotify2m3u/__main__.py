@@ -37,9 +37,21 @@ def _write_playlist(matches, playlist_name):
             str(spotify2m3u.config["paths"]["playlist_dir"].get(str)),
             f"{playlist_name}.m3u")
     logger.info("Writing playlist to: %s", playlist_file_path)
-    with open(playlist_file_path, 'w') as playlist_file:
-        playlist_file.writelines(match.decode("UTF-8") + "\n"
-                                 for match in matches)
+
+    if os.path.isfile(playlist_file_path):
+        logger.warning("File Exists: %s", playlist_file_path)
+        confirm = input(f"Overwrite '{playlist_file_path}' [y/N]? ")
+        if confirm == "y":
+            with open(playlist_file_path, 'w') as playlist_file:
+                playlist_file.writelines(match.decode("UTF-8") + "\n"
+                                         for match in matches)
+        else:
+            logger.warning("Not writing playlist to file, "
+                           "outputting to stdout")
+            print()
+            for match in matches:
+                print(match.decode("UTF-8"))
+            print()
 
 
 def main():
@@ -59,15 +71,14 @@ def main():
     if len(misses) == 0:
         logger.info("All tracks matched")
     else:
-        print("Failed to matche these tracks: ")
+        print("Failed to match these tracks: ")
         for miss in misses:
             print("- " + miss)
 
     _write_playlist(matches, name)
 
+    print("Goodbye")
+
 
 if __name__ == "__main__":
     main()
-    
-
-

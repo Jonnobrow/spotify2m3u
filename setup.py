@@ -7,6 +7,7 @@ def _read(fn):
     path = os.path.join(os.path.dirname(__file__), fn)
     return open(path).read()
 
+
 setup(
     name='spotify2m3u',
     version='0.0.2',
@@ -24,7 +25,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'spotify2m3u = spotify2m3u:main',
+            'spotify2m3u = spotify2m3u.__main__:main',
         ],
     },
     classifiers=[

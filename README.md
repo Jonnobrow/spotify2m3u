@@ -3,6 +3,10 @@
 Spotify2m3u is a simple tool to recreate spotify playlists in your local library
 by querying your media collection and creating an m3u playlist file.
 
+## Credits
+- [\[RED\]list](https://github.com/Laharah/redlist) is a similar project but it
+  also attempts to download missing tracks from \[REDACTED\].
+
 ## Warning
 - There is no overwrite protection or testing yet so if you accidentally
   overwrite a playlist you love and can't get it back I accept no responsibility

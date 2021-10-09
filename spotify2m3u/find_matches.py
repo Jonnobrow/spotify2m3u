@@ -38,12 +38,13 @@ def find_match(title: str, album: str, artists: str):
     for result in results:
         logger.debug("Found Result: %s at %s",
                      result, result.get("path"))
+    results = _set_matches(results)
     return _choose_best_match(results, title, album, artists)
 
 
 def _find_matches_by_album_and_title(title: str, album: str):
     logger.debug("Finding results by album and track title")
-    results = lib.items(f"album:{album} title:'{title}'")
+    results = lib.items(f"album:'{album}' title:'{title}'")
     logger.debug("Found %d results" % len(results))
     return list(results)
 
@@ -53,7 +54,7 @@ def _find_matches_by_artist_and_title(title: str, artists: str):
     results = []
     for artist in artists.split(";"):
         results.extend(
-                list(lib.items(f"artist:{artist} title:'{title}'")))
+                list(lib.items(f"artist:'{artist}' title:'{title}'")))
     logger.debug("Found %d results" % len(results))
     return results
 
@@ -78,6 +79,17 @@ def _find_matches_by_primary_artist_only(artists: str):
     results = lib.items(f"artist:'{primary_artist}'")
     logger.debug("Found %d results" % len(results))
     return list(results)
+
+
+def _set_matches(results: list):
+    logger.debug(type(results[0]))
+    seen_paths = set()
+    results_set = []
+    for result in results:
+        if result.get("path") not in seen_paths:
+            results_set.append(result)
+            seen_paths.add(result.get("path"))
+    return results_set
 
 
 def _choose_best_match(results: list, title: str,
